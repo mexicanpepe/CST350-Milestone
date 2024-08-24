@@ -7,6 +7,8 @@ namespace CST350_Minesweeper.Services
     {
         private string connectionString = "Server=192.168.0.214;Port=3306;Database=MinesweeperDB;User=root;Password=Qaz123wsx!;CharSet=utf8;";
 
+
+        //checks email and password combo when attempting to login
         public User checkLogin(User user)
         {
 
@@ -62,10 +64,12 @@ namespace CST350_Minesweeper.Services
             }
 
 
-
+            //will return the user that was created with all properties if user email password combo is found
+            //if not then the currentUser will return as null triggering a failure in the login.
             return currentUser;
         }
 
+        //This checks if user exists in the DB by checking email
         public bool isCurrentUser(string email)
         {
 
