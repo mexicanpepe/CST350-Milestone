@@ -7,24 +7,50 @@ namespace CST350_Minesweeper.Services
     {
         private string connectionString = "Server=192.168.0.214;Port=3306;Database=MinesweeperDB;User=root;Password=Qaz123wsx!;CharSet=utf8;";
 
-        public bool FindUserByNameAndPassword(User user)
+        public User checkLogin(User user)
         {
-            //assume no user if found
-            bool success = false;
 
-            string sqlStatement = "SELECT * FROM Users WHERE Username = @username AND Password = @password";
+            User currentUser = null;
+
+            //assume no user if found
+            //bool success = false;
+
+            string sqlQuery = "SELECT * FROM Users WHERE Email = @email AND Password = @password";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
-                command.Parameters.AddWithValue("@username", user.Username);
+                MySqlCommand command = new MySqlCommand(sqlQuery, connection);
+                command.Parameters.AddWithValue("@email", user.Email);
                 command.Parameters.AddWithValue("@password", user.Password);
 
                 try
                 {
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
-                    success = reader.HasRows;
+                    
+                    //if the reader has rows then the user email and password match within the DB
+                    if (reader.HasRows)
+                    {
+                        //success = true;
+
+                        //grab all properties from user
+                        while (reader.Read())
+                        {
+                            currentUser = new User
+                            {
+                                UserID = Convert.ToInt32(reader["UserID"]),
+                                FirstName = reader["FirstName"].ToString(),
+                                LastName = reader["LastName"].ToString(),
+                                Sex = reader["Sex"].ToString(),
+                                Age = Convert.ToInt32(reader["Age"]),
+                                State = reader["State"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                Username = reader["Username"].ToString(),
+                                Password = reader["Password"].ToString()
+                            };
+                        }
+                    }
+
                     reader.Close();
                 }
 
@@ -37,7 +63,7 @@ namespace CST350_Minesweeper.Services
 
 
 
-            return success;
+            return currentUser;
         }
 
         public bool isCurrentUser(string email)
