@@ -1,0 +1,11 @@
+﻿@model CST350_Minesweeper.Models.User
+
+<div>
+    <h4>Registration FAILED!</h4>
+    <hr />
+    <p>User email @Model.Email, already exists. Create a new User.</p>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to Registration Form</a>
+</div>
