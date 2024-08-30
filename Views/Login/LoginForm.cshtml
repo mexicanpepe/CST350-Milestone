@@ -4,11 +4,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="processLogin">
+        <form asp-action="processLogin" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" readonly="readonly" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,9 +24,11 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back Login Form</a>
+    <a asp-action="Index">Back to Login Form</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
