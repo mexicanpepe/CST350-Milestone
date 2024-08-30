@@ -1,7 +1,12 @@
+using Microsoft.Extensions.Configuration;
+using CST350_Minesweeper.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<SecurityDAO>();
 
 var app = builder.Build();
 

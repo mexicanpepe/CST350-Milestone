@@ -5,8 +5,12 @@ namespace CST350_Minesweeper.Services
 {
     public class SecurityDAO
     {
-        private string connectionString = "Server=192.168.0.214;Port=3306;Database=TEST;User=root;Password=Qaz123wsx!;CharSet=utf8;";
+        private readonly string _connectionString;
 
+        public SecurityDAO(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
 
         //checks email and password combo when attempting to login
@@ -20,7 +24,7 @@ namespace CST350_Minesweeper.Services
 
             string sqlQuery = "SELECT * FROM Users WHERE Email = @email AND Password = @password";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 MySqlCommand command = new MySqlCommand(sqlQuery, connection);
                 command.Parameters.AddWithValue("@email", user.Email);
@@ -79,7 +83,7 @@ namespace CST350_Minesweeper.Services
             // Checking to see if the user input email exists
             string sqlStatement = "SELECT * FROM Users WHERE LOWER(Email) = LOWER(@Email)";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
@@ -123,7 +127,7 @@ namespace CST350_Minesweeper.Services
             string sqlQuery = "INSERT INTO Users (FirstName, LastName, Sex, Age, State, Email, Username, Password) " +
                                   "VALUES (@FirstName, @LastName, @Sex, @Age, @State, @Email, @Username, @Password)";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
 
                 MySqlCommand command = new MySqlCommand(sqlQuery, connection);
