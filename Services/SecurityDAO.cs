@@ -90,6 +90,7 @@ namespace CST350_Minesweeper.Services
                     connection.Open();
 
                     MySqlDataReader reader = command.ExecuteReader();
+                    //if the reader has rows means the email exists in the query/db
                     userExists = reader.HasRows;
 
                     reader.Close();

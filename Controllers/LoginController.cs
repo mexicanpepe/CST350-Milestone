@@ -8,16 +8,17 @@ namespace CST350_Minesweeper.Controllers
 {
     public class LoginController : Controller
     {
-        public IActionResult Index()
+        SecurityDAO securitydao = new SecurityDAO();
+        public IActionResult Index(string email)
         {
-            //dispay LoginForm.cshtml
-            return View("LoginForm");
+            var user = new User { Email = email };
+            //dispay LoginForm.cshtml with email from Home input
+            return View("LoginForm", user);
         }
 
         //if login successfull then display success page of fails then display failure page
         public IActionResult processLogin(Models.User user)
         {
-            SecurityDAO securitydao = new SecurityDAO();
             User currentUser = securitydao.checkLogin(user);
 
             if (currentUser != null) {
@@ -27,6 +28,9 @@ namespace CST350_Minesweeper.Controllers
                 return View("LoginFailure", user);
             }
         }
+
+
+       
     }
 }
 
