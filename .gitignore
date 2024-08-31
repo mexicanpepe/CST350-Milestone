@@ -23,3 +23,8 @@ $tf/
 # Other files and folders
 bin/
 obj/
+
+
+# Ignore configuration files
+appsettings.json
+appsettings.*.json
