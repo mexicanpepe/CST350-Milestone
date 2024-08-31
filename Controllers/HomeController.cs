@@ -5,7 +5,13 @@ namespace CST350_Minesweeper.Controllers
 {
     public class HomeController : Controller
     {
-        SecurityDAO securitydao = new SecurityDAO();
+        private readonly SecurityDAO securitydao;
+
+        public HomeController(SecurityDAO securitydao)
+        {
+            securitydao = securitydao;
+        }
+
         public IActionResult Index()
         {
             return View("Home");

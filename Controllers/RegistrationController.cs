@@ -5,6 +5,13 @@ namespace CST350_Minesweeper.Controllers
 {
     public class RegistrationController : Controller
     {
+        private readonly SecurityDAO securitydao;
+
+        public RegistrationController(SecurityDAO securitydao)
+        {
+            securitydao = securitydao;
+        }
+
         //view will display RegistrationFrom.cshtml
         public IActionResult Index()
         {
@@ -15,7 +22,6 @@ namespace CST350_Minesweeper.Controllers
         [HttpPost]
         public IActionResult processRegistration(Models.User user)
         {
-            SecurityDAO securitydao = new SecurityDAO();
 
             if (securitydao.isCurrentUser(user.Email))
             {

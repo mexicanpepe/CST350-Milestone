@@ -8,7 +8,12 @@ namespace CST350_Minesweeper.Controllers
 {
     public class LoginController : Controller
     {
-        SecurityDAO securitydao = new SecurityDAO();
+        private readonly SecurityDAO securitydao;
+
+        public LoginController(SecurityDAO securitydao)
+        {
+            securitydao = securitydao;
+        }
         public IActionResult Index(string email)
         {
             var user = new User { Email = email };
@@ -22,6 +27,8 @@ namespace CST350_Minesweeper.Controllers
             User currentUser = securitydao.checkLogin(user);
 
             if (currentUser != null) {
+                //will redirect to Gameboard view
+                //return RedirectToAction("Index", "Gameboard");
                 return View("LoginSuccess", user);
 
             } else {
