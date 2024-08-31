@@ -10,9 +10,9 @@ namespace CST350_Minesweeper.Controllers
     {
         private readonly SecurityDAO securitydao;
 
-        public LoginController(SecurityDAO securitydao)
+        public LoginController(SecurityDAO injectedSecurityDAO)
         {
-            securitydao = securitydao;
+            securitydao = injectedSecurityDAO;
         }
         public IActionResult Index(string email)
         {

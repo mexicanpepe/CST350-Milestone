@@ -81,7 +81,7 @@ namespace CST350_Minesweeper.Services
             bool userExists = false;
 
             // Checking to see if the user input email exists
-            string sqlStatement = "SELECT * FROM Users WHERE LOWER(Email) = LOWER(@Email)";
+            string sqlStatement = "SELECT * FROM `Users` WHERE LOWER(`Email`) = LOWER(@Email)";
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
@@ -93,6 +93,7 @@ namespace CST350_Minesweeper.Services
                 try
                 {
                     connection.Open();
+                    Console.WriteLine($"Executing SQL Query: {sqlStatement} with Email: {email.ToLower()}");
                     Console.WriteLine($"Checking for email: {email.ToLower()}"); // Debugging output
 
                     MySqlDataReader reader = command.ExecuteReader();
