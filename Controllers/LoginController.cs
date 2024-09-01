@@ -1,6 +1,8 @@
-﻿using CST350_Minesweeper.Models;
+using CST350_Minesweeper.Models;
 using CST350_Minesweeper.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace CST350_Minesweeper.Controllers
 {
@@ -8,14 +10,16 @@ namespace CST350_Minesweeper.Controllers
     {
         private readonly SecurityDAO _securitydao;
 
-        public LoginController(SecurityDAO securitydao)
+        public LoginController(SecurityDAO injectedSecurityDAO)
         {
-            _securitydao = securitydao ?? throw new ArgumentNullException(nameof(securitydao));
+            securitydao = injectedSecurityDAO;
         }
+        
 
         public IActionResult Index(string email)
         {
             var user = new User { Email = email };
+            //dispay LoginForm.cshtml with email from Home input
             return View("LoginForm", user);
         }
 
@@ -26,21 +30,13 @@ namespace CST350_Minesweeper.Controllers
 
             if (currentUser != null)
             {
-                return View("PostLogin", currentUser);  // Redirect to the PostLogin view on successful login
+                return View("PostLogin", currentUser);  
             }
             else
             {
-                return View("LoginFailure", user);  // Redirect to the LoginFailure view on unsuccessful login
+                return View("LoginFailure", user); 
             }
         }
 
-        public IActionResult Logout()
-        {
-            // Clear session
-            HttpContext.Session.Clear();
-
-            // Redirect to login page
-            return RedirectToAction("Index", "Login");
-        }
     }
 }

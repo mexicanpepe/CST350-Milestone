@@ -1,5 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using CST350_Minesweeper.Models; 
+using CST350_Minesweeper.Models;
 
 namespace CST350_Minesweeper.Services
 {
@@ -34,7 +34,7 @@ namespace CST350_Minesweeper.Services
                 {
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
-                    
+
                     //if the reader has rows then the user email and password match within the DB
                     if (reader.HasRows)
                     {
@@ -87,13 +87,12 @@ namespace CST350_Minesweeper.Services
             {
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
-                // Use .ToLower() to ensure case-insensitivity
+                // Use .ToLower() to ensure case nsensitivity
                 command.Parameters.AddWithValue("@Email", email.ToLower());
 
                 try
                 {
                     connection.Open();
-                    Console.WriteLine($"Checking for email: {email.ToLower()}"); // Debugging output
 
                     MySqlDataReader reader = command.ExecuteReader();
 
@@ -101,11 +100,13 @@ namespace CST350_Minesweeper.Services
                     userExists = reader.HasRows;
                     if (userExists)
                     {
-                        Console.WriteLine("Email found in the database."); // Debugging output
+                        //debugging issues connecting to DB
+                        Console.WriteLine("Email found in the database.");
                     }
                     else
                     {
-                        Console.WriteLine("Email not found in the database."); // Debugging output
+                        //debug statement
+                        Console.WriteLine("Email not found in the database."); 
                     }
 
                     reader.Close();
@@ -148,6 +149,7 @@ namespace CST350_Minesweeper.Services
                     connection.Open();
                     command.ExecuteNonQuery();
 
+                    //for debugging
                     Console.WriteLine("New user added to the database successfully.");
                 }
 
