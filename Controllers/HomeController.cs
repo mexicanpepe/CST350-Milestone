@@ -7,9 +7,9 @@ namespace CST350_Minesweeper.Controllers
     {
         private readonly SecurityDAO securitydao;
 
-        public HomeController(SecurityDAO securitydao)
+        public HomeController(SecurityDAO injectedSecurityDAO)
         {
-            securitydao = securitydao;
+            securitydao = injectedSecurityDAO;
         }
 
         public IActionResult Index()
@@ -29,6 +29,7 @@ namespace CST350_Minesweeper.Controllers
             } else
             {
                 //If the emailDoesnt exist then error message can pop up in Home that says "email does not exist.. display error message
+
                 ViewBag.ErrorMessage = "Email does not exist. Register New Email?";
                 return View("Home");
 

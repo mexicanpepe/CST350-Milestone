@@ -7,9 +7,9 @@ namespace CST350_Minesweeper.Controllers
     {
         private readonly SecurityDAO securitydao;
 
-        public RegistrationController(SecurityDAO securitydao)
+        public RegistrationController(SecurityDAO injectedSecurityDAO)
         {
-            securitydao = securitydao;
+            securitydao = injectedSecurityDAO;
         }
 
         //view will display RegistrationFrom.cshtml
