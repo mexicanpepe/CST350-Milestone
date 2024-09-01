@@ -8,7 +8,7 @@ namespace CST350_Minesweeper.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly SecurityDAO _securitydao;
+        private readonly SecurityDAO securitydao;
 
         public LoginController(SecurityDAO injectedSecurityDAO)
         {
@@ -26,7 +26,7 @@ namespace CST350_Minesweeper.Controllers
         [HttpPost]
         public IActionResult ProcessLogin(User user)
         {
-            User currentUser = _securitydao.checkLogin(user);
+            User currentUser = securitydao.checkLogin(user);
 
             if (currentUser != null)
             {

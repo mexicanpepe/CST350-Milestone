@@ -5,7 +5,7 @@ namespace CST350_Minesweeper.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SecurityDAO _securitydao; 
+        private readonly SecurityDAO securitydao; 
 
         public HomeController(SecurityDAO injectedSecurityDAO)
         {
@@ -21,7 +21,7 @@ namespace CST350_Minesweeper.Controllers
         [HttpPost]
         public IActionResult CheckEmail(string email)
         {
-            bool emailExists = _securitydao.isCurrentUser(email);
+            bool emailExists = securitydao.isCurrentUser(email);
 
             if (emailExists)
             {
