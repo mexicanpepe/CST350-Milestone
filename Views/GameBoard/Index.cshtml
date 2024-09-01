@@ -1,0 +1,106 @@
+﻿@model CST350_Minesweeper.Models.GameBoard
+
+@{
+    ViewData["Title"] = "Minesweeper Game";
+}
+
+<div class="container text-center">
+    <h1>@ViewData["Title"]</h1>
+
+    <!-- Display the timer -->
+    <div class="mb-3">
+        <strong>Time:</strong> <span id="timer">@ViewData["ElapsedTime"]</span>
+    </div>
+
+    <!-- Show Start New Game button only if the game is over -->
+    @if (ViewData["GameOver"] != null && (bool)ViewData["GameOver"])
+    {
+        <form method="post" asp-action="StartGame" class="text-center mb-3">
+            <button type="submit" class="btn btn-primary">Start New Game</button>
+        </form>
+    }
+
+    <!-- Show Game Over message if the game is over -->
+    @if (ViewData["GameOver"] != null && (bool)ViewData["GameOver"])
+    {
+        <div class="alert alert-danger text-center" role="alert">
+            Game Over! Your time: @ViewData["ElapsedTime"]
+        </div>
+    }
+
+    <table class="table table-bordered text-center">
+        @for (var row = 0; row < Model.Rows; row++)
+        {
+            <tr>
+                @for (var col = 0; col < Model.Columns; col++)
+                {
+                    var cell = Model.Cells[row][col];
+                    <td>
+                        <form method="post" asp-action="RevealCell" class="m-0">
+                            <input type="hidden" name="row" value="@row" />
+                            <input type="hidden" name="column" value="@col" />
+                            <button type="submit"
+                                    class="btn @(cell.IsRevealed ? (cell.IsBomb ? "btn-danger" : "btn-light") : "btn-secondary")"
+                                    style="font-size: 24px; width: 40px; height: 40px;"
+                            @(ViewData["CanPlay"] != null && !(bool)ViewData["CanPlay"] ? "disabled" : "")>
+                                @if (cell.IsRevealed)
+                                {
+                                    <text> @(cell.IsBomb ? "💣" : (cell.NeighboringBombs > 0 ? cell.NeighboringBombs.ToString() : "0")) </text>
+                                }
+                                else
+                                {
+                                    <text> </text>
+                                }
+                            </button>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        let timerElement = document.getElementById('timer');
+        let timerStart = localStorage.getItem('timerStart');
+        let seconds = parseInt(localStorage.getItem('seconds')) || 0;
+        let timerInterval;
+
+        function updateTimer() {
+            let mins = Math.floor(seconds / 60);
+            let secs = seconds % 60;
+            timerElement.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!timerStart) {
+                localStorage.setItem('timerStart', Date.now());
+            }
+
+            timerInterval = setInterval(() => {
+                if (document.querySelector('.alert-danger') === null) { // Check if game is over
+                    seconds = Math.floor((Date.now() - new Date(timerStart).getTime()) / 1000);
+                    localStorage.setItem('seconds', seconds);
+                    updateTimer();
+                } else {
+                    clearInterval(timerInterval); // Stop timer when game ends
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            localStorage.removeItem('timerStart');
+            localStorage.removeItem('seconds');
+            seconds = 0;
+            updateTimer();
+        }
+
+        // Initialize timer based on game state
+        if (document.querySelector('.alert-danger') !== null) {
+            resetTimer(); 
+        } else {
+            startTimer();
+        }
+    </script>
+}

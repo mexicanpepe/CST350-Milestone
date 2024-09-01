@@ -5,7 +5,7 @@ namespace CST350_Minesweeper.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SecurityDAO securitydao;
+        private readonly SecurityDAO _securitydao; 
 
         public HomeController(SecurityDAO injectedSecurityDAO)
         {
@@ -17,22 +17,21 @@ namespace CST350_Minesweeper.Controllers
             return View("Home");
         }
 
-        //method that will stricly just check to see if email exists in the database
+        // method that will strictly check if the email exists in the database
         [HttpPost]
         public IActionResult CheckEmail(string email)
         {
-            bool emailExists = securitydao.isCurrentUser(email);
+            bool emailExists = _securitydao.isCurrentUser(email);
 
             if (emailExists)
             {
-                return RedirectToAction("Index", "Login", new { email = email});
-            } else
+                return RedirectToAction("Index", "Login", new { email = email });
+            }
+            else
             {
                 //If the emailDoesnt exist then error message can pop up in Home that says "email does not exist.. display error message
-
                 ViewBag.ErrorMessage = "Email does not exist. Register New Email?";
                 return View("Home");
-
             }
         }
     }

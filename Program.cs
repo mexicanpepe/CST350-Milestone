@@ -1,20 +1,18 @@
-using Microsoft.Extensions.Configuration;
 using CST350_Minesweeper.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Register services
+builder.Services.AddSingleton<SecurityDAO>();
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddScoped<SecurityDAO>();
+builder.Services.AddAuthorization(); // Add this line for authorization services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Login/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
@@ -23,10 +21,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthorization(); // Ensure this is present
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
