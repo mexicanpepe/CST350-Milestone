@@ -1,43 +1,46 @@
 ﻿using CST350_Minesweeper.Models;
 using CST350_Minesweeper.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace CST350_Minesweeper.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly SecurityDAO securitydao;
+        private readonly SecurityDAO _securitydao;
 
         public LoginController(SecurityDAO securitydao)
         {
-            securitydao = securitydao;
+            _securitydao = securitydao ?? throw new ArgumentNullException(nameof(securitydao));
         }
+
         public IActionResult Index(string email)
         {
             var user = new User { Email = email };
-            //dispay LoginForm.cshtml with email from Home input
             return View("LoginForm", user);
         }
 
-        //if login successfull then display success page of fails then display failure page
-        public IActionResult processLogin(Models.User user)
+        [HttpPost]
+        public IActionResult ProcessLogin(User user)
         {
-            User currentUser = securitydao.checkLogin(user);
+            User currentUser = _securitydao.checkLogin(user);
 
-            if (currentUser != null) {
-                //will redirect to Gameboard view
-                //return RedirectToAction("Index", "Gameboard");
-                return View("LoginSuccess", user);
-
-            } else {
-                return View("LoginFailure", user);
+            if (currentUser != null)
+            {
+                return View("PostLogin", currentUser);  // Redirect to the PostLogin view on successful login
+            }
+            else
+            {
+                return View("LoginFailure", user);  // Redirect to the LoginFailure view on unsuccessful login
             }
         }
 
+        public IActionResult Logout()
+        {
+            // Clear session
+            HttpContext.Session.Clear();
 
-       
+            // Redirect to login page
+            return RedirectToAction("Index", "Login");
+        }
     }
 }
-
