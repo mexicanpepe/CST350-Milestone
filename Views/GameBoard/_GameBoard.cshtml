@@ -1,0 +1,33 @@
+﻿@model CST350_Minesweeper.Models.GameBoard
+
+<table class="table table-bordered text-center">
+    @for (var row = 0; row < Model.Rows; row++)
+    {
+        <tr>
+            @for (var col = 0; col < Model.Columns; col++)
+            {
+                var cell = Model.Cells[row][col];
+                <td>
+                    <form method="post" asp-action="RevealCell" class="reveal-cell-form m-0">
+                        <input type="hidden" name="row" value="@row" />
+                        <input type="hidden" name="column" value="@col" />
+                        <button type="submit"
+                                class="btn @(cell.IsRevealed ? (cell.IsBomb ? "btn-danger" : "btn-light") : "btn-secondary")"
+                                style="font-size: 24px; width: 40px; height: 40px;"
+                        @(cell.IsFlagged ? "disabled" : "")
+                        @(ViewData["CanPlay"] != null && !(bool)ViewData["CanPlay"] ? "disabled" : "")>
+                            @if (cell.IsRevealed)
+                            {
+                                <text> @(cell.IsBomb ? "💣" : (cell.NeighboringBombs > 0 ? cell.NeighboringBombs.ToString() : "0")) </text>
+                            }
+                            else if (cell.IsFlagged)
+                            {
+                                <text> 🚩 </text>
+                            }
+                        </button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+</table>

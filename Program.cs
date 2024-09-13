@@ -4,8 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Register services
 builder.Services.AddSingleton<SecurityDAO>();
+builder.Services.AddSingleton<GameService>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthorization(); // Add this line for authorization services
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -21,11 +22,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization(); // Ensure this is present
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-

@@ -7,6 +7,7 @@ namespace CST350_Minesweeper.Models
         public int Rows { get; }
         public int Columns { get; }
         public Cell[][] Cells { get; }
+        public bool GameOver { get; set; }
 
         public GameBoard(int rows, int columns, int numberOfBombs)
         {
@@ -26,6 +27,7 @@ namespace CST350_Minesweeper.Models
 
             // Place bombs and calculate neighboring bombs
             PlaceBombs(numberOfBombs);
+            GameOver = false;
         }
 
         private void PlaceBombs(int numberOfBombs)
@@ -75,12 +77,30 @@ namespace CST350_Minesweeper.Models
 
             return count;
         }
+
+        // Add this method to check if the game is over
+        public void CheckGameOver()
+        {
+            
+            foreach (var row in Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (!cell.IsBomb && !cell.IsRevealed)
+                    {
+                        return; 
+                    }
+                }
+            }
+            GameOver = true;
+        }
     }
 
     public class Cell
     {
         public bool IsBomb { get; set; }
         public bool IsRevealed { get; set; }
+        public bool IsFlagged { get; set; } 
         public int NeighboringBombs { get; set; }
     }
 }
